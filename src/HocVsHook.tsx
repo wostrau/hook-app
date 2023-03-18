@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ChangeEvent, useState} from 'react'
 import './App.css'
 
 type HocVsHookPropsType = {}
@@ -11,23 +11,32 @@ export const HocVsHook: React.FC<HocVsHookPropsType> = (props) => {
         <div className="App" style={{padding: '10px'}}>
             <h1>HOC vs HOOK</h1>
             <Select values={['Minsk', 'Grodna', 'Brest', 'Magilew']}/>
-            <TextareaWithLimit limit={100} placeholder={'Comment'}/>
+            <TextareaWithLimit
+                limit={100}
+                placeholder={'Comment'}
+                value={'YO'}
+            />
         </div>
     )
 }
 
-const TextareaWithLimit: React.FC<{ limit: number, placeholder: string }> = ({limit, ...props}) => {
+type TextareaPropsType = { limit: number, placeholder: string, value: string }
+const TextareaWithLimit: React.FC<TextareaPropsType> = ({limit, value = '', ...props}) => {
+    const [textValue, setTextValue] = useState<string>(value)
+    const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => setTextValue(e.currentTarget.value)
 
     return (
-        <div style={{position: 'relative'}}>
+        <div style={{position: 'relative', width: '300px', height: '100px'}}>
             <textarea
-                style={{position: 'absolute'}}
+                style={{position: 'absolute', height: '100px'}}
                 {...props}
-                name="TextareaWithLimit"
-                cols={20}
-                rows={5}
+                maxLength={limit}
+                value={textValue}
+                onChange={onChangeHandler}
             />
-            <span>{limit}</span>
+            <span
+                style={{position: 'absolute', right: '3px', bottom: '3px'}}
+            >{limit - textValue.length}</span>
         </div>
     )
 }
