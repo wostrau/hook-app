@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import './App.css'
 import {App} from './App'
-import {HocVsHook} from './HocVsHook'
+import {HocVsHook} from './components/HocVsHook'
 
 
 export const AppContainer = () => {
