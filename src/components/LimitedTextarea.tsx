@@ -1,14 +1,13 @@
-import React, {ChangeEvent} from 'react'
-import {withLocalStorage} from '../hoc/WithStorage'
+import React from 'react'
+import {useLocalStorage} from '../local-storage/UseLocalStorage'
 
 type TextareaPropsType = {
     limit: number
     placeholder: string
-    storageValue: string;
-    saveStorage: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const LimitedTextarea: React.FC<TextareaPropsType> = ({limit, placeholder, storageValue, saveStorage}) => {
+export const LimitedTextarea: React.FC<TextareaPropsType> = ({limit, placeholder}) => {
+    const [localValue, setLocalValue] = useLocalStorage('YO', 'textarea')
 
     return (
         <div style={{position: 'relative', width: '300px', height: '100px'}}>
@@ -16,14 +15,12 @@ const LimitedTextarea: React.FC<TextareaPropsType> = ({limit, placeholder, stora
                 style={{position: 'absolute', height: '100px'}}
                 maxLength={limit}
                 placeholder={placeholder}
-                value={storageValue}
-                onChange={saveStorage}
+                value={localValue}
+                onChange={setLocalValue}
             />
             <span
                 style={{position: 'absolute', right: '3px', bottom: '3px'}}
-            >{limit - storageValue.length}</span>
+            >{limit - localValue.length}</span>
         </div>
     )
 }
-
-export const LimitedTextareaWithLocalStorage = withLocalStorage('textarea')(LimitedTextarea)
